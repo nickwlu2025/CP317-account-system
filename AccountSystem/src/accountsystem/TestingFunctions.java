@@ -48,12 +48,14 @@ public class TestingFunctions {
                 line = line.trim();
                 if (line.isEmpty()) continue;
 
-                String[] parts = line.split(",", 3);
-                if (parts.length == 3) {
+                String[] parts = line.split(",", 4);
+                if (parts.length >= 3) {
                     String username = parts[0].trim();
                     String password = parts[1].trim();
                     String email = parts[2].trim();
-                    System.out.println("Username: " + username + " | Password: " + password + " | Email: " + email);
+                    String prefs = parts.length == 4 ? parts[3].trim() : "";
+                    System.out.println("Username: " + username + " | Password: " + password + 
+                                     " | Email: " + email + " | Preferences: " + prefs);
                     empty = false;
                 }
             }
@@ -73,12 +75,13 @@ public class TestingFunctions {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             // Write header
-            writer.write("Username,Password,Email");
+            writer.write("Username,Password,Email,Preferences");
             writer.newLine();
 
             // Write user data
             for (User user : users) {
-                writer.write(user.getUsername() + "," + user.getPassword() + "," + user.getEmail());
+                writer.write(user.getUsername() + "," + user.getPassword() + "," + 
+                           user.getEmail() + "," + user.getPreferencesAsString());
                 writer.newLine();
             }
         } catch (IOException e) {
@@ -103,9 +106,13 @@ public class TestingFunctions {
                 line = line.trim();
                 if (line.isEmpty()) continue;
 
-                String[] parts = line.split(",", 3);
-                if (parts.length == 3) {
-                    users.add(new User(parts[0].trim(), parts[1].trim(), parts[2].trim()));
+                String[] parts = line.split(",", 4);
+                if (parts.length >= 3) {
+                    User user = new User(parts[0].trim(), parts[1].trim(), parts[2].trim());
+                    if (parts.length == 4) {
+                        user.loadPreferencesFromString(parts[3].trim());
+                    }
+                    users.add(user);
                 }
             }
 
