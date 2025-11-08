@@ -1,0 +1,37 @@
+
+package accountsystem;
+
+public class Product {
+   private String name;
+   private ProductCategory category;
+   private double price;
+   private String description;
+
+   public Product(String var1, ProductCategory var2, double var3, String var5) {
+      this.name = var1;
+      this.category = var2;
+      this.price = var3;
+      this.description = var5;
+   }
+
+   public String getName() {
+      return this.name;
+   }
+
+   public ProductCategory getCategory() {
+      return this.category;
+   }
+
+   public double getPrice() {
+      return this.price;
+   }
+
+   public String getDescription() {
+      return this.description;
+   }
+
+   public String toString() {
+      String var10000 = this.name;
+      return var10000 + " - $" + String.format("%.2f", this.price) + " (" + this.category.getDisplayName() + ")";
+   }
+}
